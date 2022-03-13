@@ -1,0 +1,95 @@
+<body>
+    
+    <section class="sign-in">
+
+        <div class="container" *ngIf="firebaseAuthService.isLoggedIn === false">
+    
+            <div class="row justify-content-center">
+    
+                <div class="col-4">
+
+                    <h1 class="mb-5 font-weight-bold text-center text-success">
+                        Sign In
+                    </h1>
+    
+                    <form [formGroup]="signInForm" (ngSubmit)="firebaseAuthService.SignIn(email.value, password.value)">
+    
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" class="form-control" id="email" name="email" formControlName="email" aria-describedby="emailHelp" placeholder="Enter Email Address" #email>
+                            <small id="emailHelp" class="form-text font-weight-bold text-danger" *ngIf="signInFormControl['email'].touched && signInFormControl['email'].errors?.['required']">
+                                Email Address Required!
+                            </small>
+                            <small id="emailHelp" class="form-text font-weight-bold text-danger" *ngIf="signInFormControl['email'].errors?.['email']">
+                                Please Enter A Valid Email Address!
+                            </small>
+                            <small id="emailHelp" class="form-text text-muted">
+                                We'll never share your email with anyone else.
+                            </small>
+                        </div>
+    
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" formControlName="password" placeholder="Password" #password>
+                            <small id="emailHelp" class="form-text font-weight-bold text-danger" *ngIf="signInFormControl['password'].touched && signInFormControl['password'].errors?.['required']">
+                                Password Required!
+                            </small>
+                            <small id="emailHelp" class="form-text font-weight-bold text-danger" *ngIf="signInFormControl['password'].errors?.['minlength']">
+                                Password Must Contain At Least 8 Characters!
+                            </small>
+                        </div>
+                        
+                        <div class="mt-4 text-center">
+                            <button type="submit" class="btn btn-outline-success">Sign In</button>
+                        </div>
+
+                        <div class="mt-4 dropdown-divider"></div>
+
+                        <div class="mt-4 text-center">
+                            <button type="button" class="btn btn-success" (click)="firebaseAuthService.GoogleAuth()">Log In with Google</button>
+                        </div>
+
+                        <div class="mt-4 row">
+    
+                            <div class="col-6">
+                                <div class="text-left">
+                                    <a href="/forgot-password" class="text-success" routerLink="/forgot-password">
+                                        Forgot Password
+                                    </a>
+                                </div>
+                            </div>
+            
+                            <div class="col-6">
+                                <div class="text-right">
+                                    Do Not Have An Account? 
+                                    <a href="/sign-up" class="text-success" routerLink="/sign-up">
+                                        Sign Up
+                                    </a>
+                                </div>
+                            </div>
+        
+                        </div>
+
+                    </form>
+
+                </div>
+    
+            </div>
+    
+        </div>
+
+        <div *ngIf="firebaseAuthService.isLoggedIn === true">
+
+            <div class="anonymous">
+
+                <h1 class="font-weight-bold text-center text-center-custom text-success">
+                    Hi User, You Are Already Signed In. Please Go Through The Content!
+                </h1>
+
+            </div>
+
+        </div>
+    
+    </section>
+
+</body>

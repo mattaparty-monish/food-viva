@@ -1,0 +1,26 @@
+/*
+    BODY SECTION
+*/
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    height: calc(100vh - 172px);
+    position: relative;
+}
+
+/*
+    ANONYMOUS
+*/
+
+.anonymous {
+    height: calc(100vh - 172px);
+    position: relative;
+}
+
+.text-center-custom {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

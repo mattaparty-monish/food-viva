@@ -1,0 +1,61 @@
+<body>
+
+    <section class="south-indian-recipes">
+
+        <div *ngIf="firebaseAuthService.isLoggedIn === true">
+
+            <h1 class="mt-5 mb-5 font-weight-bold text-center text-success">North Indian Recipes</h1>
+
+            <div class="row__custom">
+            
+                <div class="col-1-of-3" *ngFor="let recipe of recipes;">
+                    
+                    <div class="card__custom">
+                        
+                        <div class="card__side card__side--front">
+                            
+                            <div>
+                                <img class="card__picture" src="{{ recipe.recipeImage }}" alt="{{ recipe.name }}">
+                            </div>
+                            
+                            <div class="card__details">
+                                
+                                <h1 class="mt-4 mb-5 font-weight-bold text-center text-success">{{ recipe.name }}</h1>
+                                
+                                <p class="ml-2 mr-2 font-weight-bold text-center text-dark">{{ recipe.summary }}</p>
+                            
+                            </div>
+                        
+                        </div>
+                        
+                        <div class="card__side card__side--back card__side--back-1">
+                            
+                            <div class="card__cta">
+                                <a href="{{ recipe.recipeURL }}" class="btn btn--white">Read More!</a>
+                            </div>
+        
+                        </div>
+        
+                    </div>
+                
+                </div>
+            
+            </div>
+        
+        </div>
+
+        <div *ngIf="firebaseAuthService.isLoggedIn === false">
+
+            <div class="anonymous">
+
+                <h1 class="font-weight-bold text-center text-center-custom text-danger">
+                    Hi User, Please Sign In / Sign Up To View The Content!
+                </h1>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</body>

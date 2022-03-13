@@ -1,0 +1,35 @@
+/*
+    BODY SECTION
+*/
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    text-align: center;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+}
+
+.navbar-section {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.navbar-brand {
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.nav-item {
+    padding: 0px 18px;
+}
+
+.nav-link {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 300;
+}

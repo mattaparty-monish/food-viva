@@ -1,0 +1,23 @@
+<body>
+    
+    <section class="footer-section">
+        
+        <div class="container-fluid" *ngIf="firebaseAuthService.isLoggedIn === false">
+
+            <p class="font-weight-bold text-center text-center-custom text-muted">
+                Copyright &copy; 2022 | FoodViva | All Rights Reserved.
+            </p>
+        
+        </div>
+
+        <div class="container-fluid" *ngIf="firebaseAuthService.isLoggedIn === true">
+
+            <p class="font-weight-bold text-center text-center-custom text-muted">
+                Copyright &copy; 2022 | FoodViva | All Rights Reserved.
+            </p>
+        
+        </div>
+    
+    </section>
+
+</body>
