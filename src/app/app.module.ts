@@ -24,7 +24,6 @@ import { ForgotPasswordComponent } from './components/user/forgot-password/forgo
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { FirebaseAuthService } from './services/firebase-auth.service';
-import { AuthGuard } from './auth.guard';
 import { ReactiveFormsModule } from '@angular/forms';
 import { VerifyEmailComponent } from './components/user/verify-email/verify-email.component';
 
@@ -53,11 +52,12 @@ import { VerifyEmailComponent } from './components/user/verify-email/verify-emai
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFirestoreModule,
+    AngularFireStorageModule,
+    AngularFireDatabaseModule,
     ReactiveFormsModule
   ],
   providers: [
-    FirebaseAuthService,
-    AuthGuard
+    FirebaseAuthService
   ],
   bootstrap: [AppComponent]
 })

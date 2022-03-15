@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from './auth.guard';
 import { AboutUsComponent } from './components/about-us/about-us.component';
 import { ContactUsComponent } from './components/contact-us/contact-us.component';
 import { GujaratiRecipesComponent } from './components/regional-recipes/gujarati-recipes/gujarati-recipes.component';
@@ -13,9 +12,10 @@ import { ForgotPasswordComponent } from './components/user/forgot-password/forgo
 import { SignInComponent } from './components/user/sign-in/sign-in.component';
 import { SignUpComponent } from './components/user/sign-up/sign-up.component';
 import { VerifyEmailComponent } from './components/user/verify-email/verify-email.component';
+import { FirebaseAuthGuard } from './guard/firebase-auth.guard';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'regional-recipes', pathMatch: 'full' },
+  { path: '', redirectTo: 'sign-in', pathMatch: 'full' },
   { path: 'regional-recipes', component: RegionalRecipesComponent },
   { path: 'regional-recipes/south-indian-recipes', component: SouthIndianRecipesComponent },
   { path: 'regional-recipes/north-indian-recipes', component: NorthIndianRecipesComponent },

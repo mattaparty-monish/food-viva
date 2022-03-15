@@ -1,36 +1,27 @@
-import { Injectable, NgZone, Provider } from '@angular/core';
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
-import 'firebase/compat/firestore';
+import { Injectable, NgZone } from '@angular/core';
+import { User } from './user';
+import * as auth from 'firebase/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
-
-export interface User {
-  uid: string,
-  email: string,
-  displayName: string,
-  photoURL: string,
-  emailVerified: boolean
-}
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirebaseAuthService {
-  userState: any;
+  userData: any;
 
   constructor(public angularFirestore: AngularFirestore, public angularFireAuth: AngularFireAuth, public router: Router, public ngZone: NgZone) {
     this.angularFireAuth.authState.subscribe(user => {
       if (user) {
-          this.userState = user;
-          localStorage.setItem('user', JSON.stringify(this.userState));
-          JSON.parse(localStorage.getItem('user') || '{}');
+          this.userData = user;
+          localStorage.setItem('user', JSON.stringify(this.userData));
+          JSON.parse(localStorage.getItem('user')!);
       }
 
       else {
-          localStorage.setItem('user', '');
-          JSON.parse(localStorage.getItem('user') || '{}');
+          localStorage.setItem('user', 'null');
+          JSON.parse(localStorage.getItem('user')!);
       }
     });
   }
@@ -42,7 +33,7 @@ export class FirebaseAuthService {
           this.router.navigate(['regional-recipes']);
         });
 
-        this.SetUserData(result.user as User);
+        this.SetUserData(result.user);
       })
       
       .catch((error) => {
@@ -50,45 +41,12 @@ export class FirebaseAuthService {
       })
     ;
   }
-  
-  SetUserData(user: User) {
-    const userRef: AngularFirestoreDocument <any> = this.angularFirestore.doc('users/${ user.uid }');
-    
-    const userState: User = {
-      uid: user.uid,
-      email: user.email,
-      displayName: user.displayName,
-      photoURL: user.photoURL,
-      emailVerified: user.emailVerified
-    }
-    
-    return userRef.set(userState, {
-      merge: true
-    });
-  }
-  
-  SignOut() {
-    return this.angularFireAuth.signOut()
-      .then(() => {
-        localStorage.removeItem('user');
-        this.router.navigate(['sign-in']);
-      })
 
-      .then(() => {
-        window.location.assign('https://accounts.google.com/Logout');
-      })
-
-      .catch((error) => {
-        window.alert(error.message);
-      })
-    ;
-  }
-  
   SignUp(email: string, password: string) {
     return this.angularFireAuth.createUserWithEmailAndPassword(email, password)
       .then((result) => {
         this.SendVerificationMail();
-        this.SetUserData(result.user as User);
+        this.SetUserData(result.user);
       })
       
       .catch((error) => {
@@ -99,8 +57,8 @@ export class FirebaseAuthService {
   
   SendVerificationMail() {
     return this.angularFireAuth.currentUser
-      .then((user) => {
-        user?.sendEmailVerification()
+      .then((user: any) => {
+        user.sendEmailVerification();
       })
       
       .then(() => {
@@ -109,8 +67,8 @@ export class FirebaseAuthService {
     ;
   }
   
-  ForgotPassword(passwordResetEMail: string) {
-    return this.angularFireAuth.sendPasswordResetEmail(passwordResetEMail)
+  ForgotPassword(passwordResetEmail: string) {
+    return this.angularFireAuth.sendPasswordResetEmail(passwordResetEmail)
       .then(() => {
         window.alert("Password Reset Email Has Been Sent To Your Registered Email Address. Please Check Your Inbox!");
       })
@@ -120,21 +78,20 @@ export class FirebaseAuthService {
       })
     ;
   }
-  
+
   get isLoggedIn(): boolean {
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
-
-    if ((user !== null) && (user.emailVerified !== false)) {
-      return true;
-    }
-
-    else {
-      return false;
-    }
+    const user = JSON.parse(localStorage.getItem('user')!);
+    return user !== null && user.emailVerified !== false ? true : false;
   }
   
   GoogleAuth() {
-    return this.AuthLogin(new firebase.auth.GoogleAuthProvider());
+    return this.AuthLogin(new auth.GoogleAuthProvider())
+      .then((result: any) => {
+        if (result) {
+          this.router.navigate(['regional-recipes']);
+        }
+      })
+    ;
   }
   
   AuthLogin(provider: any) {
@@ -142,15 +99,40 @@ export class FirebaseAuthService {
       .then((result) => {
         this.ngZone.run(() => {
           this.router.navigate(['regional-recipes']);
-        })
+        });
         
-        this.SetUserData(result.user as User);
+        this.SetUserData(result.user);
       })
       
       .catch((error) => {
-        window.alert(error.message);
+        window.alert(error);
       })
     ;
   }
-
+  
+  SetUserData(user: any) {
+    const userRef: AngularFirestoreDocument <any> = this.angularFirestore.doc(`users/${ user.uid }`);
+    
+    const userData: User = {
+      uid: user.uid,
+      email: user.email,
+      displayName: user.displayName,
+      photoURL: user.photoURL,
+      emailVerified: user.emailVerified
+    }
+    
+    return userRef.set(userData, {
+      merge: true,
+    });
+  }
+  
+  SignOut() {
+    return this.angularFireAuth.signOut()
+      .then(() => {
+        localStorage.removeItem('user');
+        this.router.navigate(['sign-in']);
+      })
+    ;
+  }
+  
 }
